@@ -33,7 +33,7 @@ class EventListener implements Listener
             if ($enchant instanceof Enchantment) {
                 $item = Item::get(Item::ENCHANTED_BOOK);
                 $item->setCustomName(TextFormat::RESET . TextFormat::AQUA . "CE Book" . TextFormat::RESET);
-                $item->setCustomLore(TextFormat::RESET . TextFormat::GRAY . "Right click to use!" . TextFormat::RESET);
+                $item->setCustomLore(TextFormat::RESET . TextFormat::GRAY . "Right click onto an item to use!" . TextFormat::RESET);
                 $item->addEnchantment(new EnchantmentInstance($enchant, $this->plugin->getRandomWeightedElement($enchant->getMaxLevel())));
                 $inventory = $player->getInventory();
                 if ($inventory->canAddItem($item)) {

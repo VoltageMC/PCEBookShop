@@ -47,12 +47,12 @@ class BookShopCommand extends BaseCommand
                         if ($data) {
                             $economyProvider = $this->plugin->getEconomyProvider();
                             if ($economyProvider->getMoney($player) < $cost) {
-                                $player->sendMessage(TextFormat::RED . "Insufficient funds. You need " . $economyProvider->getMonetaryUnit() . ($cost - $economyProvider->getMoney($player)) . " more.");
+                                $player->sendMessage(TextFormat::GRAY . "You need " . $economyProvider->getMonetaryUnit() . ($cost - $economyProvider->getMoney($player)) . " more!");
                                 return;
                             }
                             $item = Item::get(Item::BOOK);
-                            $item->setCustomName(TextFormat::RESET . Utils::getColorFromRarity($type) . $name . " Custom Enchants Book" . TextFormat::RESET);
-                            $item->setLore(["Tap the ground to get a random custom enchantment."]);
+                            $item->setCustomName(TextFormat::RESET . Utils::getColorFromRarity($type) . $name . " Enchant Book" . TextFormat::RESET);
+                            $item->setLore(TextFormat::GRAY . "Right click to get a random enchant!" . TextFormat::RESET);
                             $item->getNamedTag()->setInt("pcebookshop", $type);
                             $inventory = $player->getInventory();
                             if ($inventory->canAddItem($item)) {
@@ -60,21 +60,21 @@ class BookShopCommand extends BaseCommand
                                 $inventory->addItem($item);
                                 return;
                             }
-                            $player->sendMessage(TextFormat::RED . "Purchase cancelled. Your inventory is full.");
+                            $player->sendMessage(TextFormat::GRAY . "Purchase Failed. Your inventory is full.");
                         } else {
                             $this->sendShopForm($player);
                         }
                     }
                 });
-                $form->setTitle(TextFormat::GREEN . "PCEBookShop - Purchase Confirmation");
-                $form->setContent("Are you sure you want to purchase " . Utils::getColorFromRarity($type) . $name . " Custom Enchants Book" . TextFormat::RESET . " for $" . $cost . "?");
+                $form->setTitle(TextFormat::GRAY . "Purchase Confirmation");
+                $form->setContent("Are you sure you want to purchase " . Utils::getColorFromRarity($type) . $name . " Enchant Book" . TextFormat::RESET . " for $" . $cost . "?");
                 $form->setButton1("Yes");
                 $form->setButton2("No");
                 $player->sendForm($form);
                 return;
             }
         });
-        $form->setTitle(TextFormat::GREEN . "PCEBookShop - Menu");
+        $form->setTitle(TextFormat::GRAY . "Enchanter");
         foreach (Utils::RARITY_NAMES as $rarity => $name) {
             $cost = $this->plugin->getConfig()->getNested('cost.' . strtolower($name));
             $form->addButton(Utils::getColorFromRarity($rarity) . $name . TextFormat::EOL . TextFormat::RESET . "Cost: " . $this->plugin->getEconomyProvider()->getMonetaryUnit() . $cost);
